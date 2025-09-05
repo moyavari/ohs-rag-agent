@@ -1,0 +1,6 @@
+@OHS.Copilot.API_HostAddress = http://localhost:5230
+
+GET {{OHS.Copilot.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

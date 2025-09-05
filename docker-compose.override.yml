@@ -1,0 +1,168 @@
+version: '3.8'
+
+services:
+  # PostgreSQL with pgvector extension for production vector store
+  postgres:
+    image: pgvector/pgvector:0.5.1-pg16
+    container_name: ohs-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: ohscopilot
+      POSTGRES_USER: ohsuser
+      POSTGRES_PASSWORD: ohspass123
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-postgres.sql:/docker-entrypoint-initdb.d/01-init.sql
+      - ./scripts/seed-postgres.sql:/docker-entrypoint-initdb.d/02-seed.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ohsuser -d ohscopilot"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - ohs-network
+
+  # Qdrant vector database
+  qdrant:
+    image: qdrant/qdrant:v1.7.4
+    container_name: ohs-qdrant
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrant_data:/qdrant/storage
+    environment:
+      QDRANT__SERVICE__HTTP_PORT: 6333
+      QDRANT__SERVICE__GRPC_PORT: 6334
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:6333/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - ohs-network
+
+  # Cosmos DB Emulator for Azure Cosmos DB development
+  cosmos:
+    image: mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:latest
+    container_name: ohs-cosmos
+    ports:
+      - "8081:8081"
+      - "10251:10251"
+      - "10252:10252"
+      - "10253:10253"
+      - "10254:10254"
+    environment:
+      AZURE_COSMOS_EMULATOR_PARTITION_COUNT: "10"
+      AZURE_COSMOS_EMULATOR_ENABLE_DATA_PERSISTENCE: "true"
+      AZURE_COSMOS_EMULATOR_IP_ADDRESS_OVERRIDE: "127.0.0.1"
+    volumes:
+      - cosmos_data:/tmp/cosmos
+    networks:
+      - ohs-network
+
+  # Jaeger for distributed tracing
+  jaeger:
+    image: jaegertracing/all-in-one:1.51
+    container_name: ohs-jaeger
+    ports:
+      - "16686:16686"
+      - "14268:14268"
+      - "6831:6831/udp"
+      - "6832:6832/udp"
+    environment:
+      COLLECTOR_OTLP_ENABLED: "true"
+    networks:
+      - ohs-network
+
+  # Prometheus for metrics collection
+  prometheus:
+    image: prom/prometheus:v2.48.1
+    container_name: ohs-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    networks:
+      - ohs-network
+
+  # Grafana for visualization
+  grafana:
+    image: grafana/grafana:10.2.3
+    container_name: ohs-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: "admin123"
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana:/etc/grafana/provisioning
+    networks:
+      - ohs-network
+
+  # OHS Copilot Application
+  ohs-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ohs-copilot-api
+    ports:
+      - "5000:8080"
+    environment:
+      # Database Configuration
+      PG_CONN_STR: "Host=postgres;Port=5432;Database=ohscopilot;Username=ohsuser;Password=ohspass123"
+      
+      # Vector Store Configuration
+      VECTOR_STORE: "qdrant"
+      QDRANT_ENDPOINT: "http://qdrant:6333"
+      
+      # Memory Backend
+      MEMORY_BACKEND: "cosmos"
+      COSMOS_CONN_STR: "AccountEndpoint=https://cosmos:8081/;AccountKey=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=="
+      
+      # Azure OpenAI (use environment variables or demo mode)
+      DEMO_MODE: "false"
+      AOAI_ENDPOINT: "${AOAI_ENDPOINT:-}"
+      AOAI_API_KEY: "${AOAI_API_KEY:-}"
+      AOAI_CHAT_DEPLOYMENT: "${AOAI_CHAT_DEPLOYMENT:-gpt-4}"
+      AOAI_EMB_DEPLOYMENT: "${AOAI_EMB_DEPLOYMENT:-text-embedding-ada-002}"
+      
+      # Observability
+      JAEGER_ENDPOINT: "http://jaeger:14268"
+      PROMETHEUS_ENABLED: "true"
+      TELEMETRY_ENABLED: "true"
+      
+      # Application
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ASPNETCORE_URLS: "http://+:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      qdrant:
+        condition: service_healthy
+    volumes:
+      - ./data:/app/data:ro
+      - ./fixtures:/app/fixtures
+    networks:
+      - ohs-network
+
+volumes:
+  postgres_data:
+  qdrant_data:
+  cosmos_data:
+  prometheus_data:
+  grafana_data:
+
+networks:
+  ohs-network:
+    driver: bridge

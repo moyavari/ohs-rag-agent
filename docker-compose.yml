@@ -1,0 +1,110 @@
+version: '3.8'
+
+services:
+  # OHS Copilot API
+  ohs-api:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - DEMO_MODE=true
+      - VECTOR_STORE=qdrant
+      - QDRANT_ENDPOINT=http://qdrant:6333
+      - PG_CONN_STR=Server=postgres;Database=ohscopilot;User Id=postgres;Password=postgres123;
+      - MEMORY_BACKEND=pg
+      - MEMORY_PG_CONN_STR=Server=postgres;Database=ohscopilot_memory;User Id=postgres;Password=postgres123;
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:5000
+      - LOG_SAMPLING=1.0
+    depends_on:
+      - qdrant
+      - postgres
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - ohs-network
+
+  # Qdrant Vector Database
+  qdrant:
+    image: qdrant/qdrant:v1.7.4
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrant_data:/qdrant/storage
+    environment:
+      - QDRANT__SERVICE__HTTP_PORT=6333
+      - QDRANT__SERVICE__GRPC_PORT=6334
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6333/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      - ohs-network
+
+  # PostgreSQL with pgvector extension
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      - POSTGRES_DB=ohscopilot
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres123
+      - POSTGRES_MULTIPLE_DATABASES=ohscopilot,ohscopilot_memory
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d ohscopilot"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      - ohs-network
+
+  # Redis (optional for caching)
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - ohs-network
+
+  # Jaeger for distributed tracing (development only)
+  jaeger:
+    image: jaegertracing/all-in-one:1.52
+    ports:
+      - "16686:16686"
+      - "14268:14268"
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+    networks:
+      - ohs-network
+
+networks:
+  ohs-network:
+    driver: bridge
+
+volumes:
+  qdrant_data:
+    driver: local
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local

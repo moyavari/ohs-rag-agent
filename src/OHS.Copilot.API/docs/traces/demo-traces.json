@@ -1,0 +1,82 @@
+[
+  {
+    "traceId": "demo-ask-trace-001",
+    "operation": "ask",
+    "timestamp": "2025-09-04T04:08:43.0067973Z",
+    "duration": "00:00:00.1450000",
+    "spans": [
+      {
+        "spanId": "router-001",
+        "name": "Router",
+        "kind": "Agent",
+        "duration": "00:00:00.0020000",
+        "tags": {},
+        "children": []
+      },
+      {
+        "spanId": "retriever-001",
+        "name": "Retriever",
+        "kind": "Agent",
+        "duration": "00:00:00.0150000",
+        "tags": {},
+        "children": []
+      },
+      {
+        "spanId": "drafter-001",
+        "name": "Drafter",
+        "kind": "Agent",
+        "duration": "00:00:00.1200000",
+        "tags": {},
+        "children": []
+      },
+      {
+        "spanId": "citechecker-001",
+        "name": "CiteChecker",
+        "kind": "Agent",
+        "duration": "00:00:00.0080000",
+        "tags": {},
+        "children": []
+      }
+    ]
+  },
+  {
+    "traceId": "demo-letter-trace-001",
+    "operation": "draft",
+    "timestamp": "2025-09-04T04:08:43.0077313Z",
+    "duration": "00:00:00.1130000",
+    "spans": [
+      {
+        "spanId": "router-002",
+        "name": "Router",
+        "kind": "Agent",
+        "duration": "00:00:00.0010000",
+        "tags": {},
+        "children": []
+      },
+      {
+        "spanId": "retriever-002",
+        "name": "Retriever",
+        "kind": "Agent",
+        "duration": "00:00:00.0120000",
+        "tags": {},
+        "children": []
+      },
+      {
+        "spanId": "drafter-002",
+        "name": "Drafter",
+        "kind": "Agent",
+        "duration": "00:00:00.0950000",
+        "tags": {},
+        "children": []
+      },
+      {
+        "spanId": "citechecker-002",
+        "name": "CiteChecker",
+        "kind": "Agent",
+        "duration": "00:00:00.0050000",
+        "tags": {},
+        "children": []
+      }
+    ]
+  }
+]

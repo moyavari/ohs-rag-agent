@@ -1,0 +1,39 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files: []
+
+scrape_configs:
+  # OHS Copilot API metrics
+  - job_name: 'ohs-copilot-api'
+    static_configs:
+      - targets: ['ohs-api:8080']
+    metrics_path: '/metrics'
+    scrape_interval: 5s
+    scrape_timeout: 5s
+
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+    scrape_interval: 30s
+
+  # PostgreSQL metrics (if pg_exporter is added)
+  - job_name: 'postgres'
+    static_configs:
+      - targets: ['postgres:9187']
+    scrape_interval: 30s
+    scrape_timeout: 10s
+
+  # Qdrant metrics
+  - job_name: 'qdrant'
+    static_configs:
+      - targets: ['qdrant:6333']
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: []

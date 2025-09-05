@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OHS Copilot - Safety AI Assistant (v2.0)</title>
+    <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .status-bar {
+            background: #f7fafc;
+            padding: 15px 30px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            margin: 5px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-healthy { background: #48bb78; }
+        .status-warning { background: #ed8936; }
+        .status-error { background: #f56565; }
+
+        .main-content {
+            padding: 30px;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .tab {
+            padding: 15px 25px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .tab:hover {
+            background: #f7fafc;
+        }
+
+        .tab.active {
+            border-bottom-color: #667eea;
+            color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .button-secondary {
+            background: #e2e8f0;
+            color: #2d3748;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .response-area {
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            min-height: 100px;
+        }
+
+        .citation {
+            background: white;
+            border-left: 4px solid #667eea;
+            padding: 12px 16px;
+            margin: 10px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .citation-title {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 4px;
+        }
+
+        .citation-text {
+            color: #4a5568;
+            font-size: 14px;
+        }
+
+        .citation-score {
+            color: #667eea;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .metric-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 5px;
+        }
+
+        .metric-label {
+            color: #4a5568;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .conversation-history {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .message-user {
+            background: #667eea;
+            color: white;
+            margin-left: 50px;
+        }
+
+        .message-assistant {
+            background: #f7fafc;
+            color: #2d3748;
+            margin-right: 50px;
+        }
+
+        .error {
+            background: #fed7d7;
+            color: #c53030;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #f56565;
+        }
+
+        .success {
+            background: #c6f6d5;
+            color: #2f855a;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #48bb78;
+        }
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .status-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .status-item {
+                justify-content: center;
+            }
+        }
+
+        .points-list {
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 10px;
+        }
+
+        .point-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .point-item input {
+            flex: 1;
+            margin-right: 10px;
+            margin-bottom: 0;
+        }
+
+        .remove-point {
+            background: #f56565;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .add-point {
+            background: #48bb78;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .letter-output {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            font-family: 'Times New Roman', serif;
+            line-height: 1.6;
+        }
+
+        .letter-subject {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛡️ OHS Copilot</h1>
+            <p>Enterprise Safety AI Assistant</p>
+        </div>
+
+        <div class="status-bar" id="statusBar">
+            <div class="status-item">
+                <div class="status-dot status-healthy" id="apiStatus"></div>
+                <span id="apiStatusText">Checking API...</span>
+            </div>
+            <div class="status-item">
+                <div class="status-dot status-healthy" id="vectorStatus"></div>
+                <span id="vectorStatusText">Vector Store</span>
+            </div>
+            <div class="status-item">
+                <span id="responseTime">Response Time: --</span>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="tabs">
+                <div class="tab active" onclick="showTab('ask')">💬 Ask Questions</div>
+                <div class="tab" onclick="showTab('draft')">✍️ Draft Letters</div>
+                <div class="tab" onclick="showTab('metrics')">📊 Metrics</div>
+                <div class="tab" onclick="showTab('settings')">⚙️ Settings</div>
+            </div>
+
+            <!-- Ask Questions Tab -->
+            <div id="ask-tab" class="tab-content active">
+                <div class="card">
+                    <h2>Ask Safety Questions</h2>
+                    <form id="askForm">
+                        <div class="form-group">
+                            <label for="question">Your Question</label>
+                            <textarea id="question" placeholder="What are the emergency evacuation procedures?" required></textarea>
+                        </div>
+                        
+                        <div class="settings-grid">
+                            <div class="form-group">
+                                <label for="conversationId">Conversation ID (Optional)</label>
+                                <input type="text" id="conversationId" placeholder="Leave empty for new conversation">
+                            </div>
+                            <div class="form-group">
+                                <label for="maxTokens">Max Tokens</label>
+                                <select id="maxTokens">
+                                    <option value="1000">1,000 tokens</option>
+                                    <option value="2000" selected>2,000 tokens</option>
+                                    <option value="3000">3,000 tokens</option>
+                                    <option value="4000">4,000 tokens</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="button" id="askButton">
+                            <span id="askButtonText">Ask Question</span>
+                            <div class="loading" id="askLoading" style="display: none;"></div>
+                        </button>
+                    </form>
+
+                    <div id="askResponse" class="response-area" style="display: none;">
+                        <h3>Answer</h3>
+                        <div id="answerText"></div>
+                        
+                        <div id="citationsContainer" style="margin-top: 20px;">
+                            <h4>Sources</h4>
+                            <div id="citations"></div>
+                        </div>
+                        
+                        <div id="metadata" style="margin-top: 20px; font-size: 12px; color: #4a5568;"></div>
+                    </div>
+                </div>
+
+                <div class="card" id="conversationHistory" style="display: none;">
+                    <h3>Conversation History</h3>
+                    <div class="conversation-history" id="historyContainer"></div>
+                </div>
+            </div>
+
+            <!-- Draft Letters Tab -->
+            <div id="draft-tab" class="tab-content">
+                <div class="card">
+                    <h2>Draft Letters</h2>
+                    <form id="draftForm">
+                        <div class="form-group">
+                            <label for="purpose">Letter Purpose</label>
+                            <input type="text" id="purpose" placeholder="e.g., safety compliance reminder" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Key Points</label>
+                            <div class="points-list" id="pointsList">
+                                <div class="point-item">
+                                    <input type="text" placeholder="Enter a key point..." required>
+                                    <button type="button" class="remove-point" onclick="removePoint(this)" style="display: none;">×</button>
+                                </div>
+                            </div>
+                            <button type="button" class="add-point" onclick="addPoint()">+ Add Point</button>
+                        </div>
+
+                        <div class="settings-grid">
+                            <div class="form-group">
+                                <label for="tone">Tone</label>
+                                <select id="tone">
+                                    <option value="formal" selected>Formal</option>
+                                    <option value="casual">Casual</option>
+                                    <option value="urgent">Urgent</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="recipient">Recipient (Optional)</label>
+                                <input type="text" id="recipient" placeholder="Safety Department">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="button" id="draftButton">
+                            <span id="draftButtonText">Draft Letter</span>
+                            <div class="loading" id="draftLoading" style="display: none;"></div>
+                        </button>
+                    </form>
+
+                    <div id="draftResponse" class="letter-output" style="display: none;">
+                        <div class="letter-subject" id="letterSubject"></div>
+                        <div id="letterBody"></div>
+                        <div id="letterMetadata" style="margin-top: 20px; font-size: 12px; color: #4a5568;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Metrics Tab -->
+            <div id="metrics-tab" class="tab-content">
+                <div class="card">
+                    <h2>System Metrics</h2>
+                    <div class="metrics-grid" id="metricsGrid">
+                        <div class="metric-card">
+                            <div class="metric-value" id="totalRequests">--</div>
+                            <div class="metric-label">Total Requests</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value" id="totalTokens">--</div>
+                            <div class="metric-label">Total Tokens</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value" id="averageLatency">--</div>
+                            <div class="metric-label">Avg Response (ms)</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value" id="errorRate">--</div>
+                            <div class="metric-label">Error Rate</div>
+                        </div>
+                    </div>
+                    
+                    <button class="button button-secondary" onclick="refreshMetrics()">
+                        🔄 Refresh Metrics
+                    </button>
+                </div>
+
+                <div class="card">
+                    <h3>Recent Activity</h3>
+                    <div id="recentActivity"></div>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div id="settings-tab" class="tab-content">
+                <div class="card">
+                    <h2>API Configuration</h2>
+                    <div class="settings-grid">
+                        <div class="form-group">
+                            <label for="apiUrl">API Base URL</label>
+                            <input type="text" id="apiUrl" value="http://localhost:5000">
+                        </div>
+                        <div class="form-group">
+                            <label for="demoMode">Demo Mode</label>
+                            <select id="demoMode">
+                                <option value="auto" selected>Auto-detect</option>
+                                <option value="true">Force Enable</option>
+                                <option value="false">Disable</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <button class="button" onclick="testConnection()">
+                        🔍 Test Connection
+                    </button>
+                    
+                    <button class="button button-secondary" onclick="resetSettings()">
+                        🔄 Reset to Defaults
+                    </button>
+                </div>
+
+                <div class="card">
+                    <h3>Quick Actions</h3>
+                    <div class="settings-grid">
+                        <button class="button button-secondary" onclick="loadDemoFixtures()">
+                            🎭 Load Demo Fixtures
+                        </button>
+                        <button class="button button-secondary" onclick="viewGoldenDataset()">
+                            📋 View Golden Dataset
+                        </button>
+                        <button class="button button-secondary" onclick="viewAuditLogs()">
+                            📋 View Audit Logs
+                        </button>
+                        <button class="button button-secondary" onclick="runEvaluation()">
+                            🧪 Run Evaluation
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global configuration
+        let config = {
+            apiUrl: 'http://localhost:5000',
+            demoMode: 'auto'
+        };
+
+        // Load saved settings
+        function loadSettings() {
+            const saved = localStorage.getItem('ohsCopilotSettings');
+            if (saved) {
+                config = { ...config, ...JSON.parse(saved) };
+                document.getElementById('apiUrl').value = config.apiUrl;
+                document.getElementById('demoMode').value = config.demoMode;
+            }
+        }
+
+        // Save settings
+        function saveSettings() {
+            localStorage.setItem('ohsCopilotSettings', JSON.stringify(config));
+        }
+
+        // API client
+        async function apiRequest(endpoint, options = {}) {
+            const url = `${config.apiUrl}${endpoint}`;
+            const defaultOptions = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Correlation-ID': generateCorrelationId()
+                }
+            };
+
+            try {
+                const response = await fetch(url, { ...defaultOptions, ...options });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                return await response.json();
+            } catch (error) {
+                console.error('API Request failed:', error);
+                throw error;
+            }
+        }
+
+        function generateCorrelationId() {
+            return 'web-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+        }
+
+        // Tab management
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.add('active');
+            event.target.classList.add('active');
+
+            // Load tab-specific data
+            if (tabName === 'metrics') {
+                refreshMetrics();
+            }
+        }
+
+        // Ask Questions functionality
+        document.getElementById('askForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const question = document.getElementById('question').value;
+            const conversationId = document.getElementById('conversationId').value || null;
+            const maxTokens = parseInt(document.getElementById('maxTokens').value);
+
+            setLoading('ask', true);
+            showError(null);
+
+            try {
+                const response = await apiRequest('/api/ask', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        question,
+                        conversationId,
+                        maxTokens,
+                        includeMetadata: true
+                    })
+                });
+
+                displayAskResponse(response);
+                
+                if (conversationId) {
+                    loadConversationHistory(conversationId);
+                }
+                
+            } catch (error) {
+                showError('Failed to get answer: ' + error.message);
+            } finally {
+                setLoading('ask', false);
+            }
+        });
+
+        function displayAskResponse(response) {
+            document.getElementById('askResponse').style.display = 'block';
+            document.getElementById('answerText').innerHTML = response.answer.replace(/\n/g, '<br>');
+
+            // Display citations
+            const citationsContainer = document.getElementById('citations');
+            citationsContainer.innerHTML = '';
+            
+            if (response.citations && response.citations.length > 0) {
+                response.citations.forEach((citation, index) => {
+                    const citationEl = document.createElement('div');
+                    citationEl.className = 'citation';
+                    citationEl.innerHTML = `
+                        <div class="citation-title">[${index + 1}] ${citation.title}</div>
+                        <div class="citation-text">${citation.text}</div>
+                        <div class="citation-score">Relevance: ${(citation.score * 100).toFixed(1)}%</div>
+                    `;
+                    citationsContainer.appendChild(citationEl);
+                });
+            }
+
+            // Display metadata
+            if (response.metadata) {
+                document.getElementById('metadata').innerHTML = `
+                    Processing time: ${response.metadata.processingTimeMs}ms | 
+                    Correlation ID: ${response.metadata.correlationId}
+                `;
+            }
+        }
+
+        // Draft Letters functionality
+        document.getElementById('draftForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const purpose = document.getElementById('purpose').value;
+            const tone = document.getElementById('tone').value;
+            const recipient = document.getElementById('recipient').value || null;
+            
+            const points = Array.from(document.querySelectorAll('#pointsList input'))
+                .map(input => input.value.trim())
+                .filter(point => point.length > 0);
+
+            if (points.length === 0) {
+                showError('Please add at least one key point for the letter.');
+                return;
+            }
+
+            setLoading('draft', true);
+            showError(null);
+
+            try {
+                const response = await apiRequest('/api/draft-letter', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        purpose,
+                        points,
+                        tone,
+                        recipient
+                    })
+                });
+
+                displayDraftResponse(response);
+                
+            } catch (error) {
+                showError('Failed to draft letter: ' + error.message);
+            } finally {
+                setLoading('draft', false);
+            }
+        });
+
+        function displayDraftResponse(response) {
+            document.getElementById('draftResponse').style.display = 'block';
+            document.getElementById('letterSubject').textContent = response.subject;
+            document.getElementById('letterBody').innerHTML = response.body.replace(/\n/g, '<br><br>');
+
+            if (response.metadata) {
+                document.getElementById('letterMetadata').innerHTML = `
+                    Processing time: ${response.metadata.processingTimeMs}ms | 
+                    Word count: ${response.metadata.wordCount || 'N/A'} | 
+                    Correlation ID: ${response.metadata.correlationId}
+                `;
+            }
+        }
+
+        // Points management
+        function addPoint() {
+            const pointsList = document.getElementById('pointsList');
+            const pointItem = document.createElement('div');
+            pointItem.className = 'point-item';
+            pointItem.innerHTML = `
+                <input type="text" placeholder="Enter a key point..." required>
+                <button type="button" class="remove-point" onclick="removePoint(this)">×</button>
+            `;
+            
+            const addButton = pointsList.querySelector('.add-point');
+            pointsList.insertBefore(pointItem, addButton);
+            
+            updateRemoveButtons();
+        }
+
+        function removePoint(button) {
+            button.parentElement.remove();
+            updateRemoveButtons();
+        }
+
+        function updateRemoveButtons() {
+            const points = document.querySelectorAll('.point-item');
+            points.forEach((point, index) => {
+                const removeButton = point.querySelector('.remove-point');
+                removeButton.style.display = points.length > 1 ? 'flex' : 'none';
+            });
+        }
+
+        // Metrics functionality
+        async function refreshMetrics() {
+            try {
+                const metrics = await apiRequest('/api/metrics');
+                
+                document.getElementById('totalRequests').textContent = metrics.totalRequests || 0;
+                document.getElementById('totalTokens').textContent = metrics.totalTokensUsed || 0;
+                
+                // Calculate average latency from endpoint data
+                const avgLatency = calculateAverageLatency(metrics.averageLatencyByEndpoint);
+                document.getElementById('averageLatency').textContent = avgLatency + 'ms';
+                
+                // Calculate error rate
+                const errorRate = calculateErrorRate(metrics.requestsByEndpoint, metrics.errorsByType);
+                document.getElementById('errorRate').textContent = (errorRate * 100).toFixed(1) + '%';
+                
+                showSuccess('Metrics updated successfully');
+            } catch (error) {
+                showError('Failed to load metrics: ' + error.message);
+            }
+        }
+
+        function calculateAverageLatency(latencyByEndpoint) {
+            if (!latencyByEndpoint || Object.keys(latencyByEndpoint).length === 0) return 0;
+            
+            const latencies = Object.values(latencyByEndpoint);
+            return Math.round(latencies.reduce((a, b) => a + b, 0) / latencies.length);
+        }
+
+        function calculateErrorRate(requestsByEndpoint, errorsByType) {
+            if (!requestsByEndpoint || !errorsByType) return 0;
+            
+            const totalRequests = Object.values(requestsByEndpoint).reduce((a, b) => a + b, 0);
+            const totalErrors = Object.values(errorsByType).reduce((a, b) => a + b, 0);
+            
+            return totalRequests > 0 ? totalErrors / totalRequests : 0;
+        }
+
+        // Conversation history
+        async function loadConversationHistory(conversationId) {
+            try {
+                const history = await apiRequest(`/api/conversations/${conversationId}`);
+                
+                if (history.messages && history.messages.length > 0) {
+                    document.getElementById('conversationHistory').style.display = 'block';
+                    
+                    const container = document.getElementById('historyContainer');
+                    container.innerHTML = '';
+                    
+                    history.messages.forEach(msg => {
+                        const userMsg = document.createElement('div');
+                        userMsg.className = 'message message-user';
+                        userMsg.textContent = msg.userMessage;
+                        container.appendChild(userMsg);
+                        
+                        const assistantMsg = document.createElement('div');
+                        assistantMsg.className = 'message message-assistant';
+                        assistantMsg.textContent = msg.assistantMessage;
+                        container.appendChild(assistantMsg);
+                    });
+                }
+            } catch (error) {
+                console.log('No conversation history available');
+            }
+        }
+
+        // Settings functionality
+        function resetSettings() {
+            config = {
+                apiUrl: 'http://localhost:5000',
+                demoMode: 'auto'
+            };
+            
+            document.getElementById('apiUrl').value = config.apiUrl;
+            document.getElementById('demoMode').value = config.demoMode;
+            
+            saveSettings();
+            checkApiStatus();
+            showSuccess('Settings reset to defaults');
+        }
+
+        async function testConnection() {
+            config.apiUrl = document.getElementById('apiUrl').value;
+            config.demoMode = document.getElementById('demoMode').value;
+            saveSettings();
+            
+            await checkApiStatus();
+        }
+
+        // Quick actions
+        async function loadDemoFixtures() {
+            try {
+                const fixtures = await apiRequest('/api/demo-fixtures');
+                
+                let content = '<h4>Demo Fixtures Loaded</h4>';
+                content += `<p>Ask fixtures: ${fixtures.askFixtures?.length || 0}</p>`;
+                content += `<p>Letter fixtures: ${fixtures.letterFixtures?.length || 0}</p>`;
+                
+                document.getElementById('recentActivity').innerHTML = content;
+                showSuccess('Demo fixtures loaded successfully');
+            } catch (error) {
+                showError('Failed to load demo fixtures: ' + error.message);
+            }
+        }
+
+        async function viewGoldenDataset() {
+            try {
+                const dataset = await apiRequest('/api/golden-dataset');
+                
+                let content = '<h4>Golden Dataset</h4>';
+                content += `<p>Total test cases: ${dataset.testCases?.length || 0}</p>`;
+                
+                if (dataset.testCases && dataset.testCases.length > 0) {
+                    content += '<div style="max-height: 200px; overflow-y: auto; margin-top: 10px;">';
+                    dataset.testCases.slice(0, 5).forEach((testCase, index) => {
+                        content += `<div style="margin: 10px 0; padding: 10px; background: #f7fafc; border-radius: 6px;">
+                            <strong>TC-${index + 1}:</strong> ${testCase.question}
+                        </div>`;
+                    });
+                    content += '</div>';
+                }
+                
+                document.getElementById('recentActivity').innerHTML = content;
+            } catch (error) {
+                showError('Failed to load golden dataset: ' + error.message);
+            }
+        }
+
+        async function viewAuditLogs() {
+            try {
+                const logs = await apiRequest('/api/audit-logs');
+                
+                let content = '<h4>Recent Audit Logs</h4>';
+                
+                if (logs.auditLogs && logs.auditLogs.length > 0) {
+                    content += '<div style="max-height: 300px; overflow-y: auto; margin-top: 10px;">';
+                    logs.auditLogs.slice(0, 5).forEach(log => {
+                        content += `<div style="margin: 10px 0; padding: 10px; background: #f7fafc; border-radius: 6px; font-size: 12px;">
+                            <strong>${log.operation}</strong> by ${log.userId} at ${new Date(log.timestamp).toLocaleString()}
+                            <br>Processing time: ${log.processingTimeMs}ms
+                        </div>`;
+                    });
+                    content += '</div>';
+                } else {
+                    content += '<p>No audit logs available</p>';
+                }
+                
+                document.getElementById('recentActivity').innerHTML = content;
+            } catch (error) {
+                showError('Failed to load audit logs: ' + error.message);
+            }
+        }
+
+        async function runEvaluation() {
+            try {
+                showInfo('Running evaluation... This may take a moment.');
+                
+                const evaluation = await apiRequest('/api/evaluate', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        testCases: ['all'],
+                        includeDetails: false
+                    })
+                });
+                
+                let content = '<h4>Evaluation Results</h4>';
+                content += `<p><strong>Overall Score:</strong> ${(evaluation.overallScore * 100).toFixed(1)}%</p>`;
+                content += `<p>Tests passed: ${evaluation.summary?.passed || 0} / ${evaluation.summary?.totalTests || 0}</p>`;
+                content += `<p>Processing time: ${evaluation.summary?.processingTimeMs || 0}ms</p>`;
+                
+                document.getElementById('recentActivity').innerHTML = content;
+                showSuccess('Evaluation completed successfully');
+            } catch (error) {
+                showError('Failed to run evaluation: ' + error.message);
+            }
+        }
+
+        // UI helpers
+        function setLoading(button, loading) {
+            const buttonEl = document.getElementById(button + 'Button');
+            const textEl = document.getElementById(button + 'ButtonText');
+            const loadingEl = document.getElementById(button + 'Loading');
+            
+            buttonEl.disabled = loading;
+            textEl.style.display = loading ? 'none' : 'inline';
+            loadingEl.style.display = loading ? 'inline-block' : 'none';
+        }
+
+        function showError(message) {
+            removeMessages();
+            if (message) {
+                const errorEl = document.createElement('div');
+                errorEl.className = 'error';
+                errorEl.textContent = message;
+                document.querySelector('.main-content').prepend(errorEl);
+            }
+        }
+
+        function showSuccess(message) {
+            removeMessages();
+            const successEl = document.createElement('div');
+            successEl.className = 'success';
+            successEl.textContent = message;
+            document.querySelector('.main-content').prepend(successEl);
+            
+            setTimeout(removeMessages, 3000);
+        }
+
+        function showInfo(message) {
+            removeMessages();
+            const infoEl = document.createElement('div');
+            infoEl.className = 'success';
+            infoEl.textContent = message;
+            document.querySelector('.main-content').prepend(infoEl);
+        }
+
+        function removeMessages() {
+            document.querySelectorAll('.error, .success').forEach(el => el.remove());
+        }
+
+        // Status monitoring
+        async function checkApiStatus() {
+            try {
+                const startTime = Date.now();
+                const health = await apiRequest('/api/health');
+                const responseTime = Date.now() - startTime;
+                
+                // Update API status
+                document.getElementById('apiStatus').className = 'status-dot status-healthy';
+                document.getElementById('apiStatusText').textContent = `API: ${health.status}`;
+                
+                // Update vector store status
+                const vectorStore = health.dependencies?.vectorStore;
+                console.log('Full health response:', health);
+                console.log('Dependencies:', health.dependencies);
+                console.log('Vector Store Object:', vectorStore);
+                
+                // Handle both camelCase and PascalCase property names
+                let vectorStatus = 'unknown';
+                if (vectorStore) {
+                    vectorStatus = vectorStore.status || vectorStore.Status || 'unknown';
+                }
+                
+                const vectorHealthy = vectorStore?.healthy !== false || vectorStore?.Healthy !== false;
+                console.log('Final Vector Status:', vectorStatus);
+                
+                document.getElementById('vectorStatus').className = 
+                    `status-dot ${vectorHealthy ? 'status-healthy' : 'status-error'}`;
+                document.getElementById('vectorStatusText').textContent = `Vector: ${vectorStatus}`;
+                
+                // Update response time
+                document.getElementById('responseTime').textContent = `Response Time: ${responseTime}ms`;
+                
+            } catch (error) {
+                document.getElementById('apiStatus').className = 'status-dot status-error';
+                document.getElementById('apiStatusText').textContent = 'API: Offline';
+                document.getElementById('vectorStatus').className = 'status-dot status-error';
+                document.getElementById('vectorStatusText').textContent = 'Vector: Unknown';
+                document.getElementById('responseTime').textContent = 'Response Time: --';
+            }
+        }
+
+        // Settings event handlers
+        document.getElementById('apiUrl').addEventListener('change', (e) => {
+            config.apiUrl = e.target.value;
+            saveSettings();
+        });
+
+        document.getElementById('demoMode').addEventListener('change', (e) => {
+            config.demoMode = e.target.value;
+            saveSettings();
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSettings();
+            checkApiStatus();
+            updateRemoveButtons();
+            
+            // Refresh status every 30 seconds
+            setInterval(checkApiStatus, 30000);
+        });
+    </script>
+</body>
+</html>

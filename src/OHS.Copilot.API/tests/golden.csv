@@ -1,0 +1,21 @@
+Id,Question,MustContain,MustCiteTitle,Category
+Q001,"What PPE is required for construction work?","hard hats|safety glasses|steel-toed boots","Safety Equipment Requirements|PPE",safety
+Q002,"How do I report a workplace incident?","24 hours|safety coordinator|Form WS-101","Incident Reporting Procedures",reporting
+Q003,"What should I do in a fire emergency?","activate alarm|evacuate|muster point","Emergency Evacuation Plan",emergency
+Q004,"How should chemicals be stored?","appropriate containers|labeled|trained personnel","Chemical Handling Protocols",chemical
+Q005,"What is required for return to work?","medical clearance|healthcare provider","Return to Work Guidelines",medical
+Q006,"What forms are needed for incident reporting?","Form WS-101","Incident Reporting",forms
+Q007,"Who should I contact in an emergency?","safety coordinator|supervisor|911","Emergency Procedures",emergency
+Q008,"What training is required for chemical handling?","trained personnel|proper PPE","Chemical Safety",training
+Q009,"How long do I have to report an incident?","24 hours|immediately","Incident Reporting",reporting
+Q010,"What accommodations are available for return to work?","gradual return|modified duties|reduced hours","Return to Work",medical
+Q011,"What safety equipment is mandatory?","hard hats|safety glasses|steel-toed boots","PPE Requirements",safety
+Q012,"Where is the emergency assembly point?","parking lot|muster point","Emergency Procedures",emergency
+Q013,"What information must be included in incident reports?","date|time|location|personnel|witnesses","Incident Documentation",reporting
+Q014,"What PPE standards must be met?","ANSI|standards","Safety Standards",compliance
+Q015,"How are hazardous materials identified?","labels|SDS|Safety Data Sheets","Chemical Safety",hazmat
+Q016,"What is the evacuation procedure?","nearest exit|designated routes|assembly area","Emergency Evacuation",emergency
+Q017,"Who can handle hazardous chemicals?","trained personnel|authorized staff","Chemical Handling",training
+Q018,"What medical documentation is needed for return to work?","medical clearance|healthcare provider","Medical Requirements",medical
+Q019,"How often are emergency drills conducted?","quarterly|regular","Emergency Preparedness",training
+Q020,"What should I do if PPE is damaged?","report|replace|safety coordinator","Equipment Maintenance",safety

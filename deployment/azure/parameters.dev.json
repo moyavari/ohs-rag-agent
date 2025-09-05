@@ -1,0 +1,24 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "environmentName": {
+      "value": "dev"
+    },
+    "applicationName": {
+      "value": "ohs-copilot"
+    },
+    "location": {
+      "value": "eastus"
+    },
+    "openAiLocation": {
+      "value": "eastus"
+    },
+    "containerImage": {
+      "value": "ghcr.io/your-org/ohs-copilot:develop"
+    },
+    "adminEmail": {
+      "value": "dev-team@yourorg.com"
+    }
+  }
+}

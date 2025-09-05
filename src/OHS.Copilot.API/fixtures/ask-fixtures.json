@@ -1,0 +1,387 @@
+[
+  {
+    "id": "ppe requirements",
+    "type": "ask",
+    "request": {
+      "question": "What PPE is required for construction work?",
+      "conversationId": null,
+      "maxTokens": 500,
+      "topK": 10,
+      "enableRerank": false
+    },
+    "response": {
+      "answer": "All construction workers must wear hard hats, safety glasses, and steel-toed boots [#1]. PPE must meet ANSI Z89.1 standards [#2].",
+      "citations": [
+        {
+          "id": "c1",
+          "score": 0.95,
+          "title": "Safety Policy Manual",
+          "url": null,
+          "text": "Relevant policy excerpt..."
+        },
+        {
+          "id": "c2",
+          "score": 0.88,
+          "title": "Workplace Guidelines",
+          "url": null,
+          "text": "Additional guidance..."
+        }
+      ],
+      "conversationId": null,
+      "metadata": {
+        "promptSha": "DEMO_F86B2F9B",
+        "model": "demo-model",
+        "inputTokens": null,
+        "outputTokens": null,
+        "processingTime": "00:00:00.1450000",
+        "vectorStore": "",
+        "retrievedChunks": 0,
+        "agentTraces": {
+          "total_agents": 4,
+          "total_duration_ms": 145,
+          "traces": [
+            {
+              "agent": "Router",
+              "action": "execute",
+              "duration_ms": 2,
+              "timestamp": "2025-09-04T04:07:09.9979192Z"
+            },
+            {
+              "agent": "Retriever",
+              "action": "execute",
+              "duration_ms": 15,
+              "timestamp": "2025-09-04T04:07:09.9979568Z"
+            },
+            {
+              "agent": "Drafter",
+              "action": "execute",
+              "duration_ms": 120,
+              "timestamp": "2025-09-04T04:07:09.9979569Z"
+            },
+            {
+              "agent": "CiteChecker",
+              "action": "execute",
+              "duration_ms": 8,
+              "timestamp": "2025-09-04T04:07:09.997957Z"
+            }
+          ]
+        },
+        "moderationResult": {}
+      }
+    },
+    "metadata": {
+      "promptSha": "DEMO_F86B2F9B",
+      "processingTime": "00:00:00.1450000",
+      "agentCount": 4
+    },
+    "createdAt": "2025-09-04T04:07:09.9981468Z"
+  },
+  {
+    "id": "incident reporting",
+    "type": "ask",
+    "request": {
+      "question": "How do I report a workplace incident?",
+      "conversationId": null,
+      "maxTokens": 500,
+      "topK": 10,
+      "enableRerank": false
+    },
+    "response": {
+      "answer": "Report all workplace incidents within 24 hours using Form WS-101 [#1]. Include date, time, location, personnel involved, and witness statements [#2].",
+      "citations": [
+        {
+          "id": "c1",
+          "score": 0.95,
+          "title": "Safety Policy Manual",
+          "url": null,
+          "text": "Relevant policy excerpt..."
+        },
+        {
+          "id": "c2",
+          "score": 0.88,
+          "title": "Workplace Guidelines",
+          "url": null,
+          "text": "Additional guidance..."
+        }
+      ],
+      "conversationId": null,
+      "metadata": {
+        "promptSha": "DEMO_B2270F20",
+        "model": "demo-model",
+        "inputTokens": null,
+        "outputTokens": null,
+        "processingTime": "00:00:00.1450000",
+        "vectorStore": "",
+        "retrievedChunks": 0,
+        "agentTraces": {
+          "total_agents": 4,
+          "total_duration_ms": 145,
+          "traces": [
+            {
+              "agent": "Router",
+              "action": "execute",
+              "duration_ms": 2,
+              "timestamp": "2025-09-04T04:07:09.9983648Z"
+            },
+            {
+              "agent": "Retriever",
+              "action": "execute",
+              "duration_ms": 15,
+              "timestamp": "2025-09-04T04:07:09.998365Z"
+            },
+            {
+              "agent": "Drafter",
+              "action": "execute",
+              "duration_ms": 120,
+              "timestamp": "2025-09-04T04:07:09.9983651Z"
+            },
+            {
+              "agent": "CiteChecker",
+              "action": "execute",
+              "duration_ms": 8,
+              "timestamp": "2025-09-04T04:07:09.9983651Z"
+            }
+          ]
+        },
+        "moderationResult": {}
+      }
+    },
+    "metadata": {
+      "promptSha": "DEMO_B2270F20",
+      "processingTime": "00:00:00.1450000",
+      "agentCount": 4
+    },
+    "createdAt": "2025-09-04T04:07:09.9983655Z"
+  },
+  {
+    "id": "emergency procedures",
+    "type": "ask",
+    "request": {
+      "question": "What should I do in a fire emergency?",
+      "conversationId": null,
+      "maxTokens": 500,
+      "topK": 10,
+      "enableRerank": false
+    },
+    "response": {
+      "answer": "In case of fire: activate alarm, evacuate via nearest exit, proceed to muster point in parking lot [#1]. Do not use elevators during emergencies [#2].",
+      "citations": [
+        {
+          "id": "c1",
+          "score": 0.95,
+          "title": "Safety Policy Manual",
+          "url": null,
+          "text": "Relevant policy excerpt..."
+        },
+        {
+          "id": "c2",
+          "score": 0.88,
+          "title": "Workplace Guidelines",
+          "url": null,
+          "text": "Additional guidance..."
+        }
+      ],
+      "conversationId": null,
+      "metadata": {
+        "promptSha": "DEMO_24AA1FB5",
+        "model": "demo-model",
+        "inputTokens": null,
+        "outputTokens": null,
+        "processingTime": "00:00:00.1450000",
+        "vectorStore": "",
+        "retrievedChunks": 0,
+        "agentTraces": {
+          "total_agents": 4,
+          "total_duration_ms": 145,
+          "traces": [
+            {
+              "agent": "Router",
+              "action": "execute",
+              "duration_ms": 2,
+              "timestamp": "2025-09-04T04:07:09.9983752Z"
+            },
+            {
+              "agent": "Retriever",
+              "action": "execute",
+              "duration_ms": 15,
+              "timestamp": "2025-09-04T04:07:09.9983753Z"
+            },
+            {
+              "agent": "Drafter",
+              "action": "execute",
+              "duration_ms": 120,
+              "timestamp": "2025-09-04T04:07:09.9983753Z"
+            },
+            {
+              "agent": "CiteChecker",
+              "action": "execute",
+              "duration_ms": 8,
+              "timestamp": "2025-09-04T04:07:09.9983754Z"
+            }
+          ]
+        },
+        "moderationResult": {}
+      }
+    },
+    "metadata": {
+      "promptSha": "DEMO_24AA1FB5",
+      "processingTime": "00:00:00.1450000",
+      "agentCount": 4
+    },
+    "createdAt": "2025-09-04T04:07:09.9983756Z"
+  },
+  {
+    "id": "chemical safety",
+    "type": "ask",
+    "request": {
+      "question": "How should chemicals be stored and handled?",
+      "conversationId": null,
+      "maxTokens": 500,
+      "topK": 10,
+      "enableRerank": false
+    },
+    "response": {
+      "answer": "Store chemicals in appropriate labeled containers [#1]. Only trained personnel may handle hazardous materials with proper PPE [#2].",
+      "citations": [
+        {
+          "id": "c1",
+          "score": 0.95,
+          "title": "Safety Policy Manual",
+          "url": null,
+          "text": "Relevant policy excerpt..."
+        },
+        {
+          "id": "c2",
+          "score": 0.88,
+          "title": "Workplace Guidelines",
+          "url": null,
+          "text": "Additional guidance..."
+        }
+      ],
+      "conversationId": null,
+      "metadata": {
+        "promptSha": "DEMO_9158B9A8",
+        "model": "demo-model",
+        "inputTokens": null,
+        "outputTokens": null,
+        "processingTime": "00:00:00.1450000",
+        "vectorStore": "",
+        "retrievedChunks": 0,
+        "agentTraces": {
+          "total_agents": 4,
+          "total_duration_ms": 145,
+          "traces": [
+            {
+              "agent": "Router",
+              "action": "execute",
+              "duration_ms": 2,
+              "timestamp": "2025-09-04T04:07:09.9983845Z"
+            },
+            {
+              "agent": "Retriever",
+              "action": "execute",
+              "duration_ms": 15,
+              "timestamp": "2025-09-04T04:07:09.9983852Z"
+            },
+            {
+              "agent": "Drafter",
+              "action": "execute",
+              "duration_ms": 120,
+              "timestamp": "2025-09-04T04:07:09.9983852Z"
+            },
+            {
+              "agent": "CiteChecker",
+              "action": "execute",
+              "duration_ms": 8,
+              "timestamp": "2025-09-04T04:07:09.9983853Z"
+            }
+          ]
+        },
+        "moderationResult": {}
+      }
+    },
+    "metadata": {
+      "promptSha": "DEMO_9158B9A8",
+      "processingTime": "00:00:00.1450000",
+      "agentCount": 4
+    },
+    "createdAt": "2025-09-04T04:07:09.9983854Z"
+  },
+  {
+    "id": "return to work",
+    "type": "ask",
+    "request": {
+      "question": "What is required for returning to work after an injury?",
+      "conversationId": null,
+      "maxTokens": 500,
+      "topK": 10,
+      "enableRerank": false
+    },
+    "response": {
+      "answer": "Medical clearance from healthcare provider is required [#1]. Gradual return-to-work program available with modified duties [#2].",
+      "citations": [
+        {
+          "id": "c1",
+          "score": 0.95,
+          "title": "Safety Policy Manual",
+          "url": null,
+          "text": "Relevant policy excerpt..."
+        },
+        {
+          "id": "c2",
+          "score": 0.88,
+          "title": "Workplace Guidelines",
+          "url": null,
+          "text": "Additional guidance..."
+        }
+      ],
+      "conversationId": null,
+      "metadata": {
+        "promptSha": "DEMO_06F36A89",
+        "model": "demo-model",
+        "inputTokens": null,
+        "outputTokens": null,
+        "processingTime": "00:00:00.1450000",
+        "vectorStore": "",
+        "retrievedChunks": 0,
+        "agentTraces": {
+          "total_agents": 4,
+          "total_duration_ms": 145,
+          "traces": [
+            {
+              "agent": "Router",
+              "action": "execute",
+              "duration_ms": 2,
+              "timestamp": "2025-09-04T04:07:09.9983978Z"
+            },
+            {
+              "agent": "Retriever",
+              "action": "execute",
+              "duration_ms": 15,
+              "timestamp": "2025-09-04T04:07:09.9983978Z"
+            },
+            {
+              "agent": "Drafter",
+              "action": "execute",
+              "duration_ms": 120,
+              "timestamp": "2025-09-04T04:07:09.9983979Z"
+            },
+            {
+              "agent": "CiteChecker",
+              "action": "execute",
+              "duration_ms": 8,
+              "timestamp": "2025-09-04T04:07:09.9983979Z"
+            }
+          ]
+        },
+        "moderationResult": {}
+      }
+    },
+    "metadata": {
+      "promptSha": "DEMO_06F36A89",
+      "processingTime": "00:00:00.1450000",
+      "agentCount": 4
+    },
+    "createdAt": "2025-09-04T04:07:09.9983981Z"
+  }
+]

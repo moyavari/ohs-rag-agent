@@ -1,0 +1,224 @@
+[
+  {
+    "id": "incident notification",
+    "type": "draft",
+    "request": {
+      "caseId": null,
+      "purpose": "Notify employee about incident investigation",
+      "points": [
+        "Investigation scheduled",
+        "Documentation required",
+        "Cooperation expected"
+      ],
+      "conversationId": null,
+      "maxTokens": 2000
+    },
+    "response": {
+      "subject": "Workplace Incident Investigation Notice",
+      "body": "Dear {{recipient_name}},\n\nI am writing to inform you regarding {{case_reference}} in relation to notify employee about incident investigation.\n\nBased on our review, the following items require attention:\n\n1. Investigation scheduled\n2. Documentation required\n3. Cooperation expected\n\nPlease contact the safety coordinator at {{coordinator_phone}} if you have any questions about these requirements.\n\nThe next steps will be communicated to you within {{timeline}} business days.\n\nSincerely,\n\n{{sender_name}}\n{{sender_title}}\nWorkplace Safety Department",
+      "placeholders": [
+        "recipient_name",
+        "case_reference",
+        "coordinator_phone",
+        "timeline",
+        "sender_name",
+        "sender_title"
+      ],
+      "conversationId": null,
+      "metadata": {
+        "promptSha": "DEMO_A85524A3",
+        "model": "demo-model",
+        "inputTokens": null,
+        "outputTokens": null,
+        "processingTime": "00:00:00.1120000",
+        "vectorStore": "",
+        "retrievedChunks": 0,
+        "agentTraces": {
+          "total_agents": 4,
+          "total_duration_ms": 145,
+          "traces": [
+            {
+              "agent": "Router",
+              "action": "execute",
+              "duration_ms": 2,
+              "timestamp": "2025-09-04T04:07:10.0164015Z"
+            },
+            {
+              "agent": "Retriever",
+              "action": "execute",
+              "duration_ms": 15,
+              "timestamp": "2025-09-04T04:07:10.0164017Z"
+            },
+            {
+              "agent": "Drafter",
+              "action": "execute",
+              "duration_ms": 120,
+              "timestamp": "2025-09-04T04:07:10.0164018Z"
+            },
+            {
+              "agent": "CiteChecker",
+              "action": "execute",
+              "duration_ms": 8,
+              "timestamp": "2025-09-04T04:07:10.0164019Z"
+            }
+          ]
+        },
+        "moderationResult": {}
+      }
+    },
+    "metadata": {
+      "promptSha": "DEMO_A85524A3",
+      "processingTime": "00:00:00.1120000",
+      "placeholderCount": 6
+    },
+    "createdAt": "2025-09-04T04:07:10.0164947Z"
+  },
+  {
+    "id": "return to work",
+    "type": "draft",
+    "request": {
+      "caseId": null,
+      "purpose": "Return to work authorization",
+      "points": [
+        "Medical clearance received",
+        "Modified duties approved",
+        "Follow-up scheduled"
+      ],
+      "conversationId": null,
+      "maxTokens": 2000
+    },
+    "response": {
+      "subject": "Workplace Safety Communication",
+      "body": "Dear {{recipient_name}},\n\nI am writing to inform you regarding {{case_reference}} in relation to return to work authorization.\n\nBased on our review, the following items require attention:\n\n1. Medical clearance received\n2. Modified duties approved\n3. Follow-up scheduled\n\nPlease contact the safety coordinator at {{coordinator_phone}} if you have any questions about these requirements.\n\nThe next steps will be communicated to you within {{timeline}} business days.\n\nSincerely,\n\n{{sender_name}}\n{{sender_title}}\nWorkplace Safety Department",
+      "placeholders": [
+        "recipient_name",
+        "case_reference",
+        "coordinator_phone",
+        "timeline",
+        "sender_name",
+        "sender_title"
+      ],
+      "conversationId": null,
+      "metadata": {
+        "promptSha": "DEMO_7F97D324",
+        "model": "demo-model",
+        "inputTokens": null,
+        "outputTokens": null,
+        "processingTime": "00:00:00.1120000",
+        "vectorStore": "",
+        "retrievedChunks": 0,
+        "agentTraces": {
+          "total_agents": 4,
+          "total_duration_ms": 145,
+          "traces": [
+            {
+              "agent": "Router",
+              "action": "execute",
+              "duration_ms": 2,
+              "timestamp": "2025-09-04T04:07:10.016541Z"
+            },
+            {
+              "agent": "Retriever",
+              "action": "execute",
+              "duration_ms": 15,
+              "timestamp": "2025-09-04T04:07:10.0165411Z"
+            },
+            {
+              "agent": "Drafter",
+              "action": "execute",
+              "duration_ms": 120,
+              "timestamp": "2025-09-04T04:07:10.0165412Z"
+            },
+            {
+              "agent": "CiteChecker",
+              "action": "execute",
+              "duration_ms": 8,
+              "timestamp": "2025-09-04T04:07:10.0165413Z"
+            }
+          ]
+        },
+        "moderationResult": {}
+      }
+    },
+    "metadata": {
+      "promptSha": "DEMO_7F97D324",
+      "processingTime": "00:00:00.1120000",
+      "placeholderCount": 6
+    },
+    "createdAt": "2025-09-04T04:07:10.0165415Z"
+  },
+  {
+    "id": "safety reminder",
+    "type": "draft",
+    "request": {
+      "caseId": null,
+      "purpose": "Remind about PPE compliance",
+      "points": [
+        "Recent violations noted",
+        "Training required",
+        "Policy review needed"
+      ],
+      "conversationId": null,
+      "maxTokens": 2000
+    },
+    "response": {
+      "subject": "Workplace Safety Communication",
+      "body": "Dear {{recipient_name}},\n\nI am writing to inform you regarding {{case_reference}} in relation to remind about ppe compliance.\n\nBased on our review, the following items require attention:\n\n1. Recent violations noted\n2. Training required\n3. Policy review needed\n\nPlease contact the safety coordinator at {{coordinator_phone}} if you have any questions about these requirements.\n\nThe next steps will be communicated to you within {{timeline}} business days.\n\nSincerely,\n\n{{sender_name}}\n{{sender_title}}\nWorkplace Safety Department",
+      "placeholders": [
+        "recipient_name",
+        "case_reference",
+        "coordinator_phone",
+        "timeline",
+        "sender_name",
+        "sender_title"
+      ],
+      "conversationId": null,
+      "metadata": {
+        "promptSha": "DEMO_7314ECFB",
+        "model": "demo-model",
+        "inputTokens": null,
+        "outputTokens": null,
+        "processingTime": "00:00:00.1120000",
+        "vectorStore": "",
+        "retrievedChunks": 0,
+        "agentTraces": {
+          "total_agents": 4,
+          "total_duration_ms": 145,
+          "traces": [
+            {
+              "agent": "Router",
+              "action": "execute",
+              "duration_ms": 2,
+              "timestamp": "2025-09-04T04:07:10.0165515Z"
+            },
+            {
+              "agent": "Retriever",
+              "action": "execute",
+              "duration_ms": 15,
+              "timestamp": "2025-09-04T04:07:10.0165516Z"
+            },
+            {
+              "agent": "Drafter",
+              "action": "execute",
+              "duration_ms": 120,
+              "timestamp": "2025-09-04T04:07:10.0165517Z"
+            },
+            {
+              "agent": "CiteChecker",
+              "action": "execute",
+              "duration_ms": 8,
+              "timestamp": "2025-09-04T04:07:10.0165517Z"
+            }
+          ]
+        },
+        "moderationResult": {}
+      }
+    },
+    "metadata": {
+      "promptSha": "DEMO_7314ECFB",
+      "processingTime": "00:00:00.1120000",
+      "placeholderCount": 6
+    },
+    "createdAt": "2025-09-04T04:07:10.0165519Z"
+  }
+]
